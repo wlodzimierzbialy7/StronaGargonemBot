@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -260,7 +261,7 @@
 
     <section id="purchase-form">
         <h2>Zakup licencji</h2>
-        <form action="process_payment.php" method="POST">
+        <form action="proces_kupna.php" method="POST">
             <label for="name">Imię i Nazwisko:</label>
             <input type="text" id="name" name="name" required><br>
 
@@ -330,67 +331,30 @@
     </footer>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const features = document.querySelectorAll('.feature');
-            features.forEach((feature, index) => {
-                setTimeout(() => {
-                    feature.classList.add('visible');
-                }, index * 300);
-            });
+document.addEventListener("DOMContentLoaded", () => {
+    // Animacja cech z opóźnieniem
+    document.querySelectorAll('.feature').forEach((feature, i) => 
+        setTimeout(() => feature.classList.add('visible'), i * 300)
+    );
 
-            const faqItems = document.querySelectorAll('.faq-item');
-            faqItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const answer = $(item).find('.faq-answer');
-                    answer.slideToggle(); 
-                });
-            });
+    // Obsługa kliknięcia w FAQ
+    document.querySelectorAll('.faq-item').forEach(item => 
+        item.addEventListener('click', () => $(item).find('.faq-answer').slideToggle())
+    );
 
-            const popup = document.getElementById('promo-popup');
-            const closeButton = document.getElementById('close-popup');
+    // Wyświetlenie popupu i ustawienie obsługi jego zamykania
+    setTimeout(() => document.getElementById('promo-popup').style.display = 'block', 5000);
+    document.getElementById('close-popup').onclick = () => document.getElementById('promo-popup').style.display = 'none';
 
-            setTimeout(() => {
-                popup.style.display = 'block';
-            }, 5000);
+    // Automatyczna zmiana slajdów w sekcji opinii
+    setInterval(() => {
+        const testimonials = document.querySelectorAll('.testimonial-slide');
+        let activeSlide = document.querySelector('.testimonial-slide.active');
+        activeSlide.classList.remove('active');
+        testimonials[(Array.from(testimonials).indexOf(activeSlide) + 1) % testimonials.length].classList.add('active');
+    }, 6000);
+});
 
-            closeButton.addEventListener('click', () => {
-                popup.style.display = 'none';
-            });
-
-            const testimonials = document.querySelectorAll('.testimonial-slide');
-            let currentSlide = 0;
-
-            function showNextSlide() {
-                testimonials[currentSlide].classList.remove('active');
-                currentSlide = (currentSlide + 1) % testimonials.length;
-                testimonials[currentSlide].classList.add('active');
-            }
-
-            setInterval(showNextSlide, 3000);
-
-            function countdown() {
-                const countDownDate = new Date().getTime() + (24 * 60 * 60 * 1000);
-                const timerElement = document.getElementById('timer');
-
-                const interval = setInterval(() => {
-                    const now = new Date().getTime();
-                    const distance = countDownDate - now;
-
-                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                    timerElement.innerText = `${hours}h ${minutes}m ${seconds}s`;
-
-                    if (distance < 0) {
-                        clearInterval(interval);
-                        timerElement.innerText = "Promocja zakończona!";
-                    }
-                }, 1000);
-            }
-
-            countdown();
-        });
     </script>
 </body>
 </html>
