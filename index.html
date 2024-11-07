@@ -37,7 +37,37 @@
             animation: blink 1s infinite;
         }
 
+        #sidebar {
+            position: fixed;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
+        #sidebar button {
+            background-color: #007bff;
+            color: #333;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+
+        #sidebar button:hover {
+            background-color: #0056b3;
+        }       
+       
         section {
             padding: 60px;
             margin: 50px auto;
@@ -201,19 +231,6 @@
             font-weight: bold;
         }
 
-        @keyframes pulseColor {
-            0% { color: red; }
-            25% { color: rgb(72, 253, 0); }
-            50% { color: rgb(255, 251, 0); }
-            75% { color: rgb(255, 255, 255); }
-            100% { color: rgb(255, 0, 0); }
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
 
         @keyframes blink {
             0%, 100% { opacity: 1; }
@@ -234,6 +251,15 @@
 <body>
     <header>
         <img src="https://imgur.com/XpTI43C.jpg" alt="Logo" style="max-width: 100%; height: auto;">
+
+        <div id="sidebar">
+            <button onclick="scrollToSection('product-info')"><b>O produkcie</b></button>
+            <button onclick="scrollToSection('purchase-form')"><b>Zakup licencji</b></button>
+            <button onclick="scrollToSection('faq')"><b>FAQ</b></button>
+            <button onclick="scrollToSection('testimonial-slider')"><b>Opinie</b></button>
+        </div>
+        
+        
     </header>
     <section id="product-info">
         <h2>Margonem-Bot GARGONEM</h2>
@@ -282,7 +308,7 @@
         </form>
     </section>
 
-    <section class="faq">
+    <section id="faq">
         <h2>Najczęściej zadawane pytania (FAQ)</h2>
         <div class="faq-item">
             <h3>Jak działa bot?</h3>
@@ -307,7 +333,7 @@
         </div>
     </section>
 
-    <section class="testimonial-slider">
+    <section id="testimonial-slider">
         <div class="testimonial-slide active">
             <p>Jurek Luźny: "Świetny bot, działa bez zarzutu, zdobyłem dzięki niemu już 10g i 3 legi w tydzień!! Bardzo pomocny."</p>
         </div>
@@ -332,12 +358,12 @@
 
     <script>
 document.addEventListener("DOMContentLoaded", () => {
-    // Animacja cech z opóźnieniem
+    
     document.querySelectorAll('.feature').forEach((feature, i) => 
         setTimeout(() => feature.classList.add('visible'), i * 300)
     );
 
-    // Obsługa kliknięcia w FAQ
+    // rozwijanie odpowiedzi w faq
     document.querySelectorAll('.faq-item').forEach(item => 
         item.addEventListener('click', () => $(item).find('.faq-answer').slideToggle())
     );
@@ -346,7 +372,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => document.getElementById('promo-popup').style.display = 'block', 5000);
     document.getElementById('close-popup').onclick = () => document.getElementById('promo-popup').style.display = 'none';
 
-    // Automatyczna zmiana slajdów w sekcji opinii
+    // zmiana slajdów w sekcji opinii
     setInterval(() => {
         const testimonials = document.querySelectorAll('.testimonial-slide');
         let activeSlide = document.querySelector('.testimonial-slide.active');
@@ -354,6 +380,10 @@ document.addEventListener("DOMContentLoaded", () => {
         testimonials[(Array.from(testimonials).indexOf(activeSlide) + 1) % testimonials.length].classList.add('active');
     }, 6000);
 });
+
+    function scrollToSection(id) {
+        document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
 
     </script>
 </body>
